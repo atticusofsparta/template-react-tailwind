@@ -1,0 +1,16 @@
+name: push test and build
+
+on:
+  push:
+    branches:
+      - all
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        step: ['lint:check', 'test', 'build']
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn install --frozen-lockfile
+      - run: yarn ${{ matrix.step }}
