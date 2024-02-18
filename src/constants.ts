@@ -3,9 +3,9 @@ import winston, { createLogger, format, transports } from 'winston';
 import { Logger } from '../types/index.js';
 
 export const THEME_TYPES = {
-    LIGHT: 'light',
-    DARK: 'dark'
-    };
+  LIGHT: 'light',
+  DARK: 'dark',
+};
 
 export class DefaultLogger implements Logger {
   private logger: winston.Logger;

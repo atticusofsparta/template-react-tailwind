@@ -10,7 +10,6 @@ export interface Logger {
   debug: (message: string, ...args: any[]) => void;
 }
 
-
 export interface HTTPClient {
   get<T>({
     endpoint,

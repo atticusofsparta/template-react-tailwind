@@ -22,8 +22,8 @@ const sentry =
             useLocation,
             useNavigationType,
             createRoutesFromChildren,
-            matchRoutes
-        }),
+            matchRoutes,
+          }),
         ],
         tracesSampleRate: 1.0,
         environment: ENVIRONMENT,
@@ -49,7 +49,7 @@ const filterMessages = new Set(['Cannot redefine property: ethereum']);
 
 const shouldFilterEvent = (event: Sentry.Event): boolean => {
   const isFiltered = [...filterMessages].some((message) =>
-    event.exception?.values?.some((value:any) =>
+    event.exception?.values?.some((value: any) =>
       value.value?.toLowerCase().includes(message.toLowerCase()),
     ),
   );

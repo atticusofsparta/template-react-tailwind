@@ -26,7 +26,6 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:no-inline-styles",
     "plugin:prettier/recommended" // Make this the last element so prettier config overrides other formatting rules
   ],
   "plugins": ["jest-formatting", "simple-import-sort", "import", "react-hooks"],
@@ -34,7 +33,6 @@
     "prettier/prettier": ["error", {}, { "usePrettierrc": true }], // Use our .prettierrc file as source
     "react/react-in-jsx-scope": "off",
     "no-unused-vars": "off",
-    "no-inline-styles/no-inline-styles": 2,
     "@typescript-eslint/no-unused-vars": ["error"],
   }
 }

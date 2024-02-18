@@ -1,10 +1,15 @@
-import axios, { AxiosInstance, AxiosProgressEvent, AxiosRequestConfig, CanceledError } from 'axios';
+import { DefaultLogger } from '@src/constants';
+import axios, {
+  AxiosInstance,
+  AxiosProgressEvent,
+  AxiosRequestConfig,
+  CanceledError,
+} from 'axios';
+import axiosRetry, { IAxiosRetryConfig } from 'axios-retry';
 import { Readable } from 'stream';
 import { ReadableStream } from 'stream/web';
 
-import { HTTPClient, Logger, FailedRequestError } from '../../types';
-import { DefaultLogger } from '@src/constants';
-import axiosRetry, { IAxiosRetryConfig } from 'axios-retry';
+import { FailedRequestError, HTTPClient, Logger } from '../../types';
 
 export class AxiosHTTPService implements HTTPClient {
   private axios: AxiosInstance;
@@ -84,40 +89,39 @@ export class AxiosHTTPService implements HTTPClient {
 }
 
 export interface AxiosInstanceParameters {
-    axiosConfig?: Omit<AxiosRequestConfig, 'validateStatus'>;
-    retryConfig?: IAxiosRetryConfig;
-    logger?: Logger;
-  }
-  
-  export const createAxiosInstance = ({
-    logger = new DefaultLogger(),
-    axiosConfig = {},
-    retryConfig = {
-      retryDelay: axiosRetry.exponentialDelay,
-      retries: 3,
-      retryCondition: (error) => {
-        return (
-          !(error instanceof CanceledError) &&
-          axiosRetry.isNetworkOrIdempotentRequestError(error)
-        );
-      },
-      onRetry: (retryCount, error) => {
-        logger.debug(`Request failed, ${error}. Retry attempt #${retryCount}...`);
-      },
+  axiosConfig?: Omit<AxiosRequestConfig, 'validateStatus'>;
+  retryConfig?: IAxiosRetryConfig;
+  logger?: Logger;
+}
+
+export const createAxiosInstance = ({
+  logger = new DefaultLogger(),
+  axiosConfig = {},
+  retryConfig = {
+    retryDelay: axiosRetry.exponentialDelay,
+    retries: 3,
+    retryCondition: (error) => {
+      return (
+        !(error instanceof CanceledError) &&
+        axiosRetry.isNetworkOrIdempotentRequestError(error)
+      );
     },
-  }: AxiosInstanceParameters = {}): AxiosInstance => {
-    const axiosInstance = axios.create({
-      ...axiosConfig,
-      headers: {
-        ...axiosConfig.headers,
-      },
-      validateStatus: () => true, // don't throw on non-200 status codes
-    });
-  
-    // eslint-disable-next-line
-    if (retryConfig.retries && retryConfig.retries > 0) {
-      axiosRetry(axiosInstance, retryConfig);
-    }
-    return axiosInstance;
-  };
-  
+    onRetry: (retryCount, error) => {
+      logger.debug(`Request failed, ${error}. Retry attempt #${retryCount}...`);
+    },
+  },
+}: AxiosInstanceParameters = {}): AxiosInstance => {
+  const axiosInstance = axios.create({
+    ...axiosConfig,
+    headers: {
+      ...axiosConfig.headers,
+    },
+    validateStatus: () => true, // don't throw on non-200 status codes
+  });
+
+  // eslint-disable-next-line
+  if (retryConfig.retries && retryConfig.retries > 0) {
+    axiosRetry(axiosInstance, retryConfig);
+  }
+  return axiosInstance;
+};

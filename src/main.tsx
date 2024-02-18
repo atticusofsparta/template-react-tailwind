@@ -6,7 +6,6 @@ import './index.css';
 // setup sentry
 import './services/sentry.ts';
 
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />

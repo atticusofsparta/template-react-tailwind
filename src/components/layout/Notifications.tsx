@@ -1,26 +1,24 @@
-import { captureException } from "@sentry/browser"
-import { errorEmitter, notificationEmitter } from "@src/services/events"
-import { useEffect } from "react"
-
+import { captureException } from '@sentry/browser';
+import { errorEmitter, notificationEmitter } from '@src/services/events';
+import { useEffect } from 'react';
 
 function Notifications() {
+  useEffect(() => {
+    notificationEmitter.on('notification', (notification) => {
+      console.log(notification);
+    });
 
-    useEffect(()=>{
-        notificationEmitter.on('notification', (notification)=>{
-            console.log(notification)
-        })
+    errorEmitter.on('error', (error) => {
+      captureException(error);
+    });
 
-        errorEmitter.on('error', (error)=>{
-            captureException(error)
-        })
+    return () => {
+      notificationEmitter.removeAllListeners();
+      errorEmitter.removeAllListeners();
+    };
+  }, []);
 
-        return ()=>{
-            notificationEmitter.removeAllListeners()
-            errorEmitter.removeAllListeners()
-        }
-    },[])
-
-    return <></>
+  return <></>;
 }
 
-export default Notifications
+export default Notifications;
