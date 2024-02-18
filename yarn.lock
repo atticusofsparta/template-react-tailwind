@@ -4269,6 +4269,11 @@ eslint-plugin-jsx-a11y@^6.6.1:
     object.entries "^1.1.7"
     object.fromentries "^2.0.7"
 
+eslint-plugin-jsx-no-inline-style@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-no-inline-style/-/eslint-plugin-jsx-no-inline-style-0.0.5.tgz#461177f504b135b5d2f8779f52fbab0a72d251b4"
+  integrity sha512-60yfZ3ucDcgSId5U/o4t4/PWRW+ssnIyfhV8+UrabkFsUZM5RKaw/RlHApZ14pGbxUcTc2tkT6viiYpAddtZzg==
+
 eslint-plugin-prettier@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-4.2.1.tgz#651cbb88b1dab98bfd42f017a12fa6b2d993f94b"
